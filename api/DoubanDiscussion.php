@@ -6,8 +6,8 @@
  * @date 2012-12-13
  */
 
-class DoubanDiscussion extends DoubanBase {
-
+class DoubanDiscussion extends DoubanBase 
+{
     /**
      * @brief 构造函数，初始设置clientId
      *
@@ -27,10 +27,10 @@ class DoubanDiscussion extends DoubanBase {
             case 'GET':
             case 'PUT':
             case 'DELETE':
-                $this->uri = '/v2/discussion/'.$params['id'];
+                $this->uri = '/v2/discussion/' . $params['id'];
                 break;
             case 'POST':
-                $this->uri = '/v2/'.$params['target'].'/'.$params['id'].'/discussions';
+                $this->uri = '/v2/' . $params['target'] . '/' . $params['id'] . '/discussions';
                 break;
         }
         return $this;
@@ -47,7 +47,8 @@ class DoubanDiscussion extends DoubanBase {
     public function discussionsList($requestType, $params)
     {
         $this->type = $requestType;
-        $this->uri = '/v2/'.$params['target'].'/'.$params['id'].'/discussions';
+        $this->uri = '/v2/' . $params['target'] . '/' . $params['id'] . '/discussions';
         return $this;
     }
 }
+

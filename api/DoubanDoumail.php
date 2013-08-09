@@ -6,8 +6,8 @@
  * @date 2012-12-05
  */
 
-class DoubanDoumail extends DoubanBase {
-
+class DoubanDoumail extends DoubanBase 
+{
     /**
      * @brief 构造函数，初始设置clientId
      *
@@ -36,7 +36,7 @@ class DoubanDoumail extends DoubanBase {
             case 'GET':
             case 'PUT':
             case 'DELETE':
-                $this->uri = '/v2/doumail/'.$params['id'];
+                $this->uri = '/v2/doumail/' . $params['id'];
                 break;
             case 'POST':
                 $this->uri = '/v2/doumails';
@@ -117,3 +117,4 @@ class DoubanDoumail extends DoubanBase {
         return $this;
     }
 }
+

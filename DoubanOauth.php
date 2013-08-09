@@ -4,7 +4,7 @@
  * @brief 一个简单的豆瓣PHP Oauth2类
  * @author JonChou <ilorn.mc@gmail.com>
  * @version 0.4
- * @date 2012-12-13
+ * @date 2013-01-28
  */
 
 if (!function_exists('curl_init')) {
@@ -14,10 +14,10 @@ if (!function_exists('json_decode')) {
     throw new Exception('Simple douban oauth2 needs the JSON PHP extension.');
 }
 
-class DoubanOauth {
-    
+class DoubanOauth 
+{    
     /**
-     * @brief 豆瓣Oauth类词头
+     * @brief 豆瓣Oauth类头
      */
     const PREFIX = 'Douban';
 
@@ -32,10 +32,15 @@ class DoubanOauth {
     protected $accessUri = 'https://www.douban.com/service/auth2/token';
     
     /**
-     * @brief api请求链接
+     * @brief API请求链接
      */
     protected $apiUri = 'https://api.douban.com';
-                
+    
+    /**
+     * @brief API实例
+     */
+    protected $apiInstance;
+    
     /**
      * @brief 豆瓣应用public key
      */
@@ -52,24 +57,19 @@ class DoubanOauth {
     protected $redirectUri;
 
     /**
-     * @brief Api权限
+     * @brief APP权限
      */
-    protected $scope;
+    protected $scope = 'douban_basic_common';
     
     /**
      * @brief 返回类型，默认使用code
      */
-    protected $responseType;
+    protected $responseType = 'code';
     
     /**
      * @brief 用户授权码
      */
     protected $authorizeCode;
-
-    /**
-     * @brief 储存返回的令牌（accessToken,refreshToken）
-     */
-    protected $tokens;
 
     /**
      * @brief 通过authorizeCode获得的访问令牌
@@ -82,19 +82,12 @@ class DoubanOauth {
     protected $refreshToken;
 
     /**
-     * @var 默认请求头信息 
+     * @brief 默认情况下，授权状态为false，不会在header中发送accessToken
      */
-    protected $defaultHeader = array(
-                'Content_type: application/x-www-form-urlencoded'
-                );
+    protected $needPermission = false;
 
     /**
-     * @var 需授权的请求头
-     */
-    protected $authorizeHeader;
-    
-    /**
-     * @var curl默认设置  
+     * @brief curl默认设置  
      */
     protected $CURL_OPTS = array(
                 CURLOPT_CONNECTTIMEOUT => 10,
@@ -107,21 +100,21 @@ class DoubanOauth {
     /**
      * @brief 初始化豆瓣OAUTH，设置相关参数
      *
-     * @param string $client_id
-     * @param string $secret
-     * @param string $redirect_uri
-     * @param string $scope
-     * @param string $responseType
+     * @param array $config client_id, secret, redirect_uri, scope, need_permission, response_type
      *
      * @return void
      */
-    public function __construct($clientId, $secret, $redirectUri, $scope ='douban_basic_common', $responseType = 'code')
+    public function __construct($config)
     {
-        $this->clientId = $clientId;
-        $this->secret = $secret;
-        $this->redirectUri = $redirectUri;
-        $this->scope = $scope;
-        $this->responseType = $responseType;
+        $this->clientId = $config['client_id'];
+        $this->secret = $config['secret'];
+        $this->redirectUri = $config['redirect_uri'];
+        if (!empty($config['scope']))
+            $this->scope = $config['scope'];
+        if (!empty($config['need_permission']))
+            $this->needPermission = $config['need_permission'];
+        if (!empty($config['response_type']))
+            $this->responseType = $config['response_type'];
     }
 
     /**
@@ -133,7 +126,8 @@ class DoubanOauth {
     {
         // 获取AuthorizeCode请求链接
         $authorizeUrl = $this->getAuthorizeUrl();
-        header('Location:'.$authorizeUrl);
+        header('Location:' . $authorizeUrl);
+        exit;
     }
     
     /**
@@ -149,14 +143,14 @@ class DoubanOauth {
     }
 
     /**
-     * @brief 通过AuthorizeCode获取accessToken
+     * @brief 使用AuthorizeCode请求accessToken
      *
-     * @return string
+     * @return void
      */
     public function requestAccessToken()
     {
         $accessUrl = $this->accessUri;
-        $header = $this->defaultHeader;
+        $header = $this->getDefaultHeader();
         $data = array(
                     'client_id' => $this->clientId,
                     'client_secret' => $this->secret,
@@ -165,10 +159,9 @@ class DoubanOauth {
                     'code' => $this->authorizeCode,
                     );
 
-        $result = $this->curl($accessUrl, 'POST', $header, $data);
-        $this->tokens = json_decode($result);
-        $this->refreshToken = $this->tokens->refresh_token;
-        $this->accessToken = $this->tokens->access_token;
+        $result = json_decode($this->curl($accessUrl, 'POST', $header, $data));
+        $this->refreshToken = $result->refresh_token;
+        $this->accessToken = $result->access_token;
     }
     
     /**
@@ -176,7 +169,7 @@ class DoubanOauth {
      *
      * @param string $accessToken
      *
-     * @return object
+     * @return void
      */
     public function setAccessToken($accessToken)
     {
@@ -208,38 +201,58 @@ class DoubanOauth {
         $func = $info[1];
         $type = strtoupper($info[2]);
 
-        $doubanApi = self::PREFIX.ucfirst(strtolower($class));
-        // 豆瓣Api路径
-        $apiFile = dirname(__FILE__).'/api/'.$doubanApi.'.php';
-        // 豆瓣Api基类路径
-        $basePath = dirname(__FILE__).'/api/DoubanBase.php';
-        
-        try {
-            $this->fileLoader($basePath);
-            $this->fileLoader($apiFile);
-        } catch(Exception $e) {
-            echo 'Apiloader error:'.$e->getMessage();
+        $doubanApi = self::PREFIX . ucfirst(strtolower($class));
+
+        if (!($this->apiInstance instanceof $doubanApi)) {
+            $apiFile = dirname(__FILE__) . '/api/' . $doubanApi . '.php';
+            $basePath = dirname(__FILE__) . '/api/DoubanBase.php';
+            try {
+                $this->fileLoader($basePath);
+                $this->fileLoader($apiFile);
+            } catch(Exception $e) {
+                echo 'Apiloader error:' . $e->getMessage();
+            }
+            $this->apiInstance = new $doubanApi($this->clientId);
         }
 
-        $instance = new $doubanApi($this->clientId);
-        return $instance->$func($type, $params);
+        $this->apiInstance->$func($type, $params);
+        return $this;
+    }
+
+    /**
+     * @brief 授权设置选项，访问需授权API时，请调用该函数。
+     *
+     * @return object
+     */
+    public function setNeedPermission($permissionStatus = true)
+    {
+        $this->needPermission = (boolean)$permissionStatus;
+        return $this;
+    }
+    
+    /**
+     * @brief 获取API当前授权状态
+     *
+     * @return boolean
+     */
+    public function getNeedPermission()
+    {
+        return $this->needPermission;
     }
 
     /**
      * @brief 请求豆瓣API,返回包含相关数据的对象
      *
-     * @param object $API
      * @param array $data
-     * @param boolean 为true时会在header中发送accessToken
      *
-     * @return object
+     * @return string
      */
-    public function makeRequest($api, $data = array(), $authorization = false)
+    public function makeRequest($data = array())
     {
-        // API的完整URL
-        $url = $this->apiUri.$api->uri;
-        $header = $authorization ? $this->getAuthorizeHeader() : $this->defaultHeader;
-        $type = $api->type;
+        // API的完整Uri
+        $url = $this->apiUri . $this->apiInstance->uri;
+        $header = $this->needPermission ? $this->getAuthorizeHeader() : $this->getDefaultHeader();
+        $type = $this->apiInstance->type;
 
         return $this->curl($url, $type, $header, $data);
     }
@@ -258,17 +271,27 @@ class DoubanOauth {
                     'scope' => $this->scope
                     );
 
-        return $this->authorizeUri.'?'.http_build_query($params);
+        return $this->authorizeUri . '?' . http_build_query($params);
     }
 
     /**
-     * @brief 获取Authorization header
+     * @brief 获取HTTP默认请求头
+     *
+     * @return 
+     */
+    protected function getDefaultHeader()
+    {
+        return array('Content_type: application/x-www-form-urlencoded');
+    }
+
+    /**
+     * @brief 获取HTTP授权请求头
      *
      * @return array
      */
     protected function getAuthorizeHeader()
     {
-        return $this->authorizeHeader = array('Authorization: Bearer '.$this->accessToken);
+        return array('Authorization: Bearer ' . $this->accessToken);
     }
 
     /**
@@ -288,18 +311,16 @@ class DoubanOauth {
         $opts[CURLOPT_CUSTOMREQUEST] = $type;
         $header[] = 'Expect:'; 
         $opts[CURLOPT_HTTPHEADER] = $header;
-        if ($type == 'POST' || $type =='PUT') {
+        if ($type == 'POST' || $type == 'PUT') {
             $opts[CURLOPT_POSTFIELDS] = $data;
         }
 
         $ch = curl_init();
         curl_setopt_array($ch, $opts);
         $result = curl_exec($ch);
-
         if (curl_errno($ch)) {
-            return json_encode(array("count"=>0, "error"=> "CURL Error ".curl_error($ch)));
+            $result = 'CURL error: ' . curl_error($ch);
         }
-
         curl_close($ch);  
         return $result;
     }
@@ -315,9 +336,9 @@ class DoubanOauth {
     {
         // 文件路径错误时抛出异常
         if ( ! file_exists($path)) {
-            throw new Exception('The file you wanted to load does not exists.');
+            throw new Exception('The API file you wanted to load does not exists.');
         }
-
-        require $path;
+        require_once $path;
     }
 }
+
