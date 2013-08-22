@@ -2,6 +2,6 @@ Options -Indexes
 
 #Enable RewriteEngine
 RewriteEngine On
-RewriteBase /dHelper
+RewriteBase /
 
 RewriteRule ^wechat(.*)$ dbwx.php$1
