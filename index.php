@@ -67,17 +67,9 @@ class Controller {
  * Welcome sample controller
  */
 class WelcomeController extends Controller {
-  protected $tpl;
-  
-  protected function before() {
-    parent::before();
-
-    require_once './lib/Savant3.php';
-    $this->tpl = new Savant3();
-  }
 
   protected function index() {
-    $this->tpl->display('./tpl/index.tpl.php');
+    echo file_get_contents('./Welcome_index.html');
   }
 }
 
