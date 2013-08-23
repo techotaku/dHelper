@@ -85,7 +85,7 @@ class WelcomeController extends Controller {
  * Wechat sample controller
  */
 class WechatController extends Controller {
-  protected $req;
+  protected $wechat;
 
   protected function before() {
     parent::before();
@@ -93,31 +93,33 @@ class WechatController extends Controller {
     require_once './lib/Wechat.php';
     require_once './config.php';
 
-    $wechat = new Wechat(TOKEN);
-    $this->req = $wechat->getRequest();
+    $this->wechat = new Wechat(TOKEN, DEBUG);
 
-    if ($this->req != NULL) {
+    if ($this->wechat->isValid()) {
 
-      switch ($this->req->getRequestType()) {
-        case WechatRequestType::unknown:
+      switch ($this->wechat->getRequestType()) {
+        case WechatRequest::unknown:
           $this->route->action = 'unknown';
           break;
-        case WechatRequestType::subscribe:
+        case WechatRequest::subscribe:
           $this->route->action = 'subscribe';
           break;
-        case WechatRequestType::unsubscribe:
+        case WechatRequest::unsubscribe:
           $this->route->action = 'unsubscribe';
           break;
-        case WechatRequestType::text:
+        case WechatRequest::voice:
+          $this->route->action = 'voice';
+          break;
+        case WechatRequest::text:
           $this->route->action = 'text';
           break;
-        case WechatRequestType::image:
+        case WechatRequest::image:
           $this->route->action = 'image';
           break;
-        case WechatRequestType::location:
+        case WechatRequest::location:
           $this->route->action = 'location';
           break;
-        case WechatRequestType::link:
+        case WechatRequest::link:
           $this->route->action = 'link';
           break;
         default:
@@ -135,11 +137,15 @@ class WechatController extends Controller {
   }
 
   protected function unknown() {
-    $this->req->responseText('我们已经记录了您发送的消息[' . $this->req->item('msgtype') . ']。');
+    $this->wechat->sendResponse(WechatResponse::text, '我们已经记录了您发送的消息[' . $this->wechat->getRequest('msgtype') . ']。');
+  }
+
+  protected function voice() {
+    $this->wechat->sendResponse(WechatResponse::text, '语音消息' . print_r($this->wechat->getRequest(), TRUE));
   }
 
   protected function subscribe() {
-    $this->req->responseText('欢迎关注【豆瓣查】微信公众账号！回复 帮助 或者 help 或者中英文问号可获得帮助信息。');
+    $this->wechat->sendResponse(WechatResponse::text, '欢迎关注【豆瓣查】微信公众账号！回复 帮助 或者 help 或者中英文问号可获得帮助信息。');
   }
 
   protected function unsubscribe() {
@@ -147,24 +153,24 @@ class WechatController extends Controller {
   }
 
   protected function text() {
-    $this->req->responseText('收到了文字消息：' . $this->req->item('content'));
+    $this->wechat->sendResponse(WechatResponse::text, '收到了文字消息：' . $this->wechat->getRequest('content'));
   }
 
   protected function image() {
-    $picurl = $this->req->item('picurl');
+    $picurl = $this->wechat->getRequest('picurl');
     $items = array(
         new WechatNewsResponseItem('标题一', '这是一篇非常短的图文消息。', $picurl, $picurl),
         new WechatNewsResponseItem('标题二', '非常短的图文消息二。', $picurl, $picurl),
     );
-    $this->req->responseNews($items);
+    $this->wechat->sendResponse(WechatResponse::news, $items);
   }
 
   protected function location() {
-    $this->req->responseText('收到了位置消息：' . $this->req->item('location_x') . '，' . $this->req->item('location_y'));
+    $this->wechat->sendResponse(WechatResponse::text, '收到了位置消息：' . $this->wechat->getRequest('location_x') . '，' . $this->wechat->getRequest('location_y'));
   }
 
   protected function link() {
-    $this->req->responseText('收到了链接：' . $this->req->item('url'));
+    $this->wechat->sendResponse(WechatResponse::text, '收到了链接：' . $this->wechat->getRequest('url'));
   }
 }
 

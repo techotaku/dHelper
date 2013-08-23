@@ -5,6 +5,7 @@
 
 //define your token
 define('TOKEN', '');
+define('DEBUG', TRUE);
 
 //豆瓣应用public key
 define('DKEY', '');
