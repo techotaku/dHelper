@@ -2,7 +2,7 @@
 /**
  * 微信公众平台 PHP SDK
  *
- * @author NetPuter <netputer@gmail.com>
+ * @author Ian Li <i@techotaku.net>
  */
 
   /**
