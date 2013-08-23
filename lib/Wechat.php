@@ -53,7 +53,6 @@
               $xml = (array) simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA);
               // 将数组键名转换为小写，提高健壮性，减少因大小写不同而出现的问题
               $this->request = array_change_key_case($xml, CASE_LOWER);
-              error_log('Request got.');
             } catch (Exception $e) {
               // 解析过程中发生异常，清空数据表示解析失败
               $this->request = NULL;
@@ -72,7 +71,8 @@
      * @return boolean
      */
     public function isValid() {
-      return !is_null($this->request);
+      // 确保请求非空，确保fromusername、tousername存在（确保sendError不会引用到空数据）
+      return !is_null($this->request) && isset($this->request['fromusername']) && isset($this->request['tousername']);
     }
 
     /**
@@ -168,10 +168,9 @@
      *         $params['description']
      *         $params['musicUrl']
      *         $params['hqMusicUrl']
-     * @param  integer $funcFlag 默认为0，设为1时星标刚才收到的消息
      * @return void
      */
-    public function sendResponse($type, $params, $funcFlag = 0) {
+    public function sendResponse($type, $params) {
       if ($this->isValid()) {
         // 仅在请求有效时回复
         try {
@@ -179,18 +178,18 @@
           switch ($type) {
 
             case WechatResponse::news:
-              $response = new WechatNewsResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params, $funcFlag);
+              $response = new WechatNewsResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params);
               break;
 
             case WechatResponse::music:
-              $response = new WechatMusicResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params['title'], $params['description'], $params['musicUrl'], $params['hqMusicUrl'], $funcFlag);
+              $response = new WechatMusicResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params['title'], $params['description'], $params['musicUrl'], $params['hqMusicUrl']);
               break;
 
             case WechatResponse::text:
 
             default:
               // 默认作为文本消息回复，$params视为文本内容
-              $response = new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params, $funcFlag);
+              $response = new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params);
               break;
           }
           // 发送回复，停止脚本执行
@@ -251,7 +250,7 @@
 ERR;
           $content = sprintf($template, $ex->getMessage(), $ex->getFile(), $ex->getLine());
         }
-        exit(new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $content, 1));
+        exit(new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $content));
       }
     }
 
@@ -286,13 +285,11 @@ ERR;
 
     protected $toUserName;
     protected $fromUserName;
-    protected $funcFlag;
     protected $template;
 
-    public function __construct($toUserName, $fromUserName, $funcFlag) {
+    public function __construct($toUserName, $fromUserName) {
       $this->toUserName = $toUserName;
       $this->fromUserName = $fromUserName;
-      $this->funcFlag = $funcFlag;
     }
 
     abstract public function __toString();
@@ -306,8 +303,8 @@ ERR;
 
     protected $content;
 
-    public function __construct($toUserName, $fromUserName, $content, $funcFlag = 0) {
-      parent::__construct($toUserName, $fromUserName, $funcFlag);
+    public function __construct($toUserName, $fromUserName, $content) {
+      parent::__construct($toUserName, $fromUserName);
 
       $this->content = $content;
       $this->template = <<<XML
@@ -317,7 +314,6 @@ ERR;
   <CreateTime>%s</CreateTime>
   <MsgType><![CDATA[text]]></MsgType>
   <Content><![CDATA[%s]]></Content>
-  <FuncFlag>%s<FuncFlag>
 </xml>
 XML;
     }
@@ -327,8 +323,7 @@ XML;
         $this->toUserName,
         $this->fromUserName,
         time(),
-        $this->content,
-        $this->funcFlag
+        $this->content
       );
     }
 
@@ -344,8 +339,8 @@ XML;
     protected $musicUrl;
     protected $hqMusicUrl;
 
-    public function __construct($toUserName, $fromUserName, $title, $description, $musicUrl, $hqMusicUrl, $funcFlag) {
-      parent::__construct($toUserName, $fromUserName, $funcFlag);
+    public function __construct($toUserName, $fromUserName, $title, $description, $musicUrl, $hqMusicUrl) {
+      parent::__construct($toUserName, $fromUserName);
 
       $this->title = $title;
       $this->description = $description;
@@ -363,7 +358,6 @@ XML;
     <MusicUrl><![CDATA[%s]]></MusicUrl>
     <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
   </Music>
-  <FuncFlag>%s<FuncFlag>
 </xml>
 XML;
     }
@@ -376,8 +370,7 @@ XML;
         $this->title,
         $this->description,
         $this->musicUrl,
-        $this->hqMusicUrl,
-        $this->funcFlag
+        $this->hqMusicUrl
       );
     }
 
@@ -390,8 +383,8 @@ XML;
 
     protected $items = array();
 
-    public function __construct($toUserName, $fromUserName, $items, $funcFlag) {
-      parent::__construct($toUserName, $fromUserName, $funcFlag);
+    public function __construct($toUserName, $fromUserName, $items) {
+      parent::__construct($toUserName, $fromUserName);
 
       $this->items = $items;
       $this->template = <<<XML
@@ -404,7 +397,6 @@ XML;
   <Articles>
     %s
   </Articles>
-  <FuncFlag>%s<FuncFlag>
 </xml>
 XML;
     }
@@ -415,8 +407,7 @@ XML;
         $this->fromUserName,
         time(),
         count($this->items),
-        implode($this->items),
-        $this->funcFlag
+        implode($this->items)
       );
     }
 
