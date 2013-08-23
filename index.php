@@ -83,22 +83,24 @@ class WechatController extends Controller {
 回复\"帮助\"或者\"help\"或者中英文问号查看帮助信息。";
   const resDefault = "欢迎使用【豆瓣查】！
 回复\"帮助\"或者\"help\"或者中英文问号查看帮助信息。";
-  const resHelp = "指令说明：\n
+  const resHelp = "搜索说明：\n
 类型 关键字\n
 可用类型包括：电影、f；音乐、m；图书、b。
 如\"电影 一代宗师\"，\"b 九州 天光云影\"。
-本应用查询结果来自豆瓣（www.douban.com），感谢豆瓣网提供API服务。";
-  const resHelpFilm = "指令说明：\n
+最多返回匹配的前十个结果。\n
+本应用查询结果来自豆瓣（www.douban.com），感谢豆瓣网提供API服务。
+有任何意见或建议，欢迎联系微信techotaku。";
+  const resHelpFilm = "电影搜索说明：\n
 电影 关键字
 f 关键字\n
 关键字可用空格隔开，至多返回匹配的前十个结果。
 如\"电影 一代宗师\"。";
-  const resHelpMusic = "指令说明：\n
+  const resHelpMusic = "音乐搜索说明：\n
 音乐 关键字
 m 关键字\n
 关键字可用空格隔开，至多返回匹配的前十个结果。
 如\"音乐 江南\"。";
-  const resHelpBook = "指令说明：\n
+  const resHelpBook = "图书搜索说明：\n
 图书 关键字
 b 关键字\n
 关键字可用空格隔开，至多返回匹配的前十个结果。
