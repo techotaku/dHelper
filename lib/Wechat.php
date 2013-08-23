@@ -94,7 +94,7 @@
     private $request;
 
     /**
-     * 初始化，判断此次请求是否为验证请求，并以数组形式保存
+     * 构造WechatRequest对象
      *
      * @param array $request 解析后的请求信息
      */
