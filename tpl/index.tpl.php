@@ -7,8 +7,8 @@
 	<meta content="关注豆瓣助手，速查豆瓣影音书信息！豆瓣，电影，音乐，读书。" name="description" />
 	<link rel="shortcut icon" href="http://dbcha.techotaku.net/favicon.ico" type="image/vnd.microsoft.icon">
     <link rel="icon" href="http://dbcha.techotaku.net/favicon.ico" type="image/vnd.microsoft.icon">
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
     <title>微信：豆瓣查</title>
   </head>
   <body style="background-color: gray;">
@@ -16,7 +16,7 @@
 	  <div style="height:50%;">&nbsp;</div>
       <div>
 	    <div style="float:left;">
-		  <img src="2dqrcode.jpg" class="img-rounded"  alt="微信公众帐号“豆瓣查”二维码" title="打开微信扫一扫！（id：doubancha）" />
+		  <img src="/img/2dqrcode.jpg" class="img-rounded"  alt="微信公众帐号“豆瓣查”二维码" title="打开微信扫一扫！（id：doubancha）" />
 		</div>
 		
 		<div style="float:right;">

@@ -204,8 +204,8 @@ class DoubanOauth
         $doubanApi = self::PREFIX . ucfirst(strtolower($class));
 
         if (!($this->apiInstance instanceof $doubanApi)) {
-            $apiFile = dirname(__FILE__) . '/api/' . $doubanApi . '.php';
-            $basePath = dirname(__FILE__) . '/api/DoubanBase.php';
+            $apiFile = dirname(__FILE__) . '/DoubanApi/' . $doubanApi . '.php';
+            $basePath = dirname(__FILE__) . '/DoubanApi/DoubanBase.php';
             try {
                 $this->fileLoader($basePath);
                 $this->fileLoader($apiFile);
