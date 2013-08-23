@@ -77,6 +77,33 @@ class WelcomeController extends Controller {
  * Wechat sample controller
  */
 class WechatController extends Controller {
+  const resError = "\n如此消息频繁出现，请联系管理员 i@techotaku.net 。";
+  const resSubscribe = "欢迎关注【豆瓣查】微信公众账号！
+在这里，您可以很方便地从豆瓣检索指定的电影、音乐或图书。
+回复\"帮助\"或者\"help\"或者中英文问号查看帮助信息。";
+  const resDefault = "欢迎使用【豆瓣查】！
+回复\"帮助\"或者\"help\"或者中英文问号查看帮助信息。";
+  const resHelp = "指令说明：\n
+类型 关键字\n
+可用类型包括：电影、f；音乐、m；图书、b。
+如\"电影 一代宗师\"，\"b 九州 天光云影\"。
+本应用查询结果来自豆瓣（www.douban.com），感谢豆瓣网提供API服务。";
+  const resHelpFilm = "指令说明：\n
+电影 关键字
+f 关键字\n
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如\"电影 一代宗师\"。";
+  const resHelpMusic = "指令说明：\n
+音乐 关键字
+m 关键字\n
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如\"音乐 江南\"。";
+  const resHelpBook = "指令说明：\n
+图书 关键字
+b 关键字\n
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如\"图书 天光云影\"。";
+
   protected $wechat;
 
   protected function before() {
@@ -90,29 +117,19 @@ class WechatController extends Controller {
     if ($this->wechat->isValid()) {
 
       switch ($this->wechat->getRequestType()) {
-        case WechatRequest::unknown:
-          $this->route->action = 'unknown';
+        case WechatRequest::text:
+          $this->route->action = 'text';
           break;
         case WechatRequest::subscribe:
           $this->route->action = 'subscribe';
           break;
         case WechatRequest::unsubscribe:
-          $this->route->action = 'unsubscribe';
-          break;
         case WechatRequest::voice:
-          $this->route->action = 'voice';
-          break;
-        case WechatRequest::text:
-          $this->route->action = 'text';
-          break;
         case WechatRequest::image:
-          $this->route->action = 'image';
-          break;
         case WechatRequest::location:
-          $this->route->action = 'location';
-          break;
         case WechatRequest::link:
-          $this->route->action = 'link';
+        case WechatRequest::unknown:
+          $this->route->action = 'def';
           break;
         default:
           $this->route->action = 'index';
@@ -128,42 +145,177 @@ class WechatController extends Controller {
     echo 'Wechat service works.';
   }
 
-  protected function unknown() {
-    $this->wechat->sendResponse(WechatResponse::text, '我们已经记录了您发送的消息[' . $this->wechat->getRequest('msgtype') . ']。');
-  }
-
-  protected function voice() {
-    $this->wechat->sendResponse(WechatResponse::text, '语音消息' . print_r($this->wechat->getRequest(), TRUE));
+  protected function def() {
+    $this->wechat->sendResponse(WechatResponse::text, self::resDefault);
   }
 
   protected function subscribe() {
-    $this->wechat->sendResponse(WechatResponse::text, '欢迎关注【豆瓣查】微信公众账号！回复 帮助 或者 help 或者中英文问号可获得帮助信息。');
-  }
-
-  protected function unsubscribe() {
-    // 「悄悄的我走了，正如我悄悄的来；我挥一挥衣袖，不带走一片云彩。」
+    $this->wechat->sendResponse(WechatResponse::text, self::resSubscribe);
   }
 
   protected function text() {
-    $this->wechat->sendResponse(WechatResponse::text, '收到了文字消息：' . $this->wechat->getRequest('content'));
+    try {
+
+      $command = explode(' ', $this->wechat->getRequest('content'), 2);
+      if (count($command) > 1)
+      {
+        $key = strtolower($command[0]);
+        $param = strtolower($command[1]);
+        switch ($key)
+        {
+          case '帮助':
+          case 'help':
+          case '？':
+          case '?':
+            switch ($param) {
+              case '电影':
+              case 'f':
+                $this->wechat->sendResponse(WechatResponse::text, self::resHelpFilm);
+                break;
+              case '音乐':
+              case 'm':
+                $this->wechat->sendResponse(WechatResponse::text, self::resHelpMusic);
+                break;
+              case '图书':
+              case 'b':
+                $this->wechat->sendResponse(WechatResponse::text, self::resHelpBook);
+                break;
+              default:
+                $this->wechat->sendResponse(WechatResponse::text, '暂无与"' . $param . '"相关的帮助信息。');
+                break;
+            }
+            break;
+          case '电影':
+          case 'f':
+            $this->search('movie', $param);
+            break;
+          case '音乐':
+          case 'm':
+            $this->search('music', $param);
+            break;
+          case '图书':
+          case 'b':
+            $this->search('book', $param);
+            break;
+          default:
+            $this->default();
+            break;
+        }
+      } else {
+        $key = strtolower($command[0]);
+        switch ($key)
+        {
+          case '帮助':
+          case 'help':
+          case '？':
+          case '?':
+            $this->wechat->sendResponse(WechatResponse::text, self::resHelp);
+            break;
+          case '电影':
+          case 'f':
+            $this->wechat->sendResponse(WechatResponse::text, self::resHelpFilm);
+            break;
+          case '音乐':
+          case 'm':
+            $this->wechat->sendResponse(WechatResponse::text, self::resHelpMusic);
+            break;
+          case '图书':
+          case 'b':
+            $this->wechat->sendResponse(WechatResponse::text, self::resHelpBook);
+            break;
+          default:
+            $this->default();
+            break;
+        }
+      }
+      
+    } catch (Exception $ex) {
+      if (DEBUG) {
+        $template = "
+处理指令时发送异常
+
+%s
+文件： %s
+行号： %s
+";
+        $content = sprintf($template, $ex->getMessage(), $ex->getFile(), $ex->getLine());
+        $this->wechat->sendResponse(WechatResponse::text, $content);
+      }
+    }
+
   }
 
-  protected function image() {
-    $picurl = $this->wechat->getRequest('picurl');
-    $items = array(
-        new WechatNewsResponseItem('标题一', '这是一篇非常短的图文消息。', $picurl, $picurl),
-        new WechatNewsResponseItem('标题二', '非常短的图文消息二。', $picurl, $picurl),
-    );
-    $this->wechat->sendResponse(WechatResponse::news, $items);
+  private function search($api, $param) {
+    $api = ucfirst(strtolower($api));
+
+    if (in_array($api, array('Movie', 'Music', 'Book'))) {
+
+      require_once './lib/DoubanOauth.php';
+      $appConfig = array(
+        'client_id' => DKEY,
+        'secret' => DSERCRET,
+        'redirect_uri' => 'http://dbcha.techotaku.net/douban/callback',
+        'scope' => 'douban_basic_common,book_basic_r,movie_basic,movie_basic_r,music_basic_r',
+        'need_permission' => false
+        );
+
+      $douban = new DoubanOauth($appConfig);
+      $data = array(
+        'q' => $param, 
+        'start' => 0, 
+        'count' => 10
+        );
+      $r = $douban->api($api . '.search.GET', $data)->makeRequest();
+
+      if (strncmp('CURL error:', $r, 10) == 0) {
+        $this->wechat->sendResponse(WechatResponse::text, 'Oops! 向豆瓣发送搜索请求时发生错误：' . $r . self::resError);
+      }
+
+      $result = json_decode($r, TRUE);
+
+      if (json_last_error() != JSON_ERROR_NONE) {
+        $this->wechat->sendResponse(WechatResponse::text, 'Oops! 应用可能已经达到每分钟搜索次数限制。解析豆瓣搜索结果时发生错误：' . json_last_error() . $r . self::resError);
+      }
+
+      if (isset($result['error'])) {
+        $this->wechat->sendResponse(WechatResponse::text, 'Oops! 豆瓣返回了一条错误信息：' . $result['error'] . self::resError);
+      }
+
+      if (isset($result['count']) && $result['count'] <= 0) {
+        $this->wechat->sendResponse(WechatResponse::text, '没有找到与"' . $param . '"有关的豆瓣条目。');
+      }
+
+      $items = array();
+      switch ($api) {
+        case 'Movie':
+          $items = $result['subjects'];
+          break;
+        case 'Music':
+          $items = $result['musics'];
+          break;
+        case 'Book':
+          $items = $result['books'];
+          break;
+      }
+
+      $news = array();
+      foreach ($items as $item) {
+        $picurl = '';
+        if (isset($item['images'])) {
+          $picurl = $item['images']['large'];
+        } elseif (isset($item['image'])) {
+          $picurl = $item['image'];
+        }
+
+        array_push($news, new WechatNewsResponseItem($item['title'], '', $picurl, $item['alt']));
+      }
+      $this->wechat->sendResponse(WechatResponse::news, $news);
+
+    } else {
+      $this->wechat->sendResponse(WechatResponse::text, '暂不支持的豆瓣Api：' . $param);
+    }
   }
 
-  protected function location() {
-    $this->wechat->sendResponse(WechatResponse::text, '收到了位置消息：' . $this->wechat->getRequest('location_x') . '，' . $this->wechat->getRequest('location_y'));
-  }
-
-  protected function link() {
-    $this->wechat->sendResponse(WechatResponse::text, '收到了链接：' . $this->wechat->getRequest('url'));
-  }
 }
 
 $route = new Router;
