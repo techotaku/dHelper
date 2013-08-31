@@ -137,10 +137,15 @@ b 关键字\n
           $this->route->action = 'index';
           break;
       }
+    } elseif ($this->wechat->isApiValidation()) {
+      $this->route->action = 'nop';
     } else {
       $this->route->action = 'index';
     }
     
+  }
+
+  protected function nop() {
   }
 
   protected function index() {

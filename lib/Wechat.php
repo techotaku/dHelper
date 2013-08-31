@@ -2,7 +2,10 @@
 /**
  * 微信公众平台 PHP SDK
  *
- * @author Ian Li <i@techotaku.net>
+ * @author     Ian Li <i@techotaku.net>
+ * @copyright  Ian Li <i@techotaku.net>, All rights reserved.
+ * @link       https://github.com/techotaku/Wechat-SDK.php
+ * @license    MIT License
  */
 
   /**
@@ -41,7 +44,7 @@
         if ($this->isApiValidation()) {
 
           // 处理接入验证
-          exit($_GET['echostr']);
+          echo $_GET['echostr'];
 
         } else {
 
@@ -94,7 +97,7 @@
       }
 
       // 对应的参数不存在
-      return NULL;
+      return FALSE;
     }
 
     /**
@@ -182,7 +185,7 @@
               break;
 
             case WechatResponse::music:
-              $response = new WechatMusicResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params['title'], $params['description'], $params['musicUrl'], $params['hqMusicUrl']);
+              $response = new WechatMusicResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $params['title'], $params['description'], $params['musicurl'], $params['hqmusicurl']);
               break;
 
             case WechatResponse::text:
@@ -193,7 +196,7 @@
               break;
           }
           // 发送回复，停止脚本执行
-          exit($response);
+          echo $response;
 
         } catch (Exception $ex) {
           $this->sendError($ex);
@@ -206,7 +209,7 @@
      *
      * @return boolean
      */
-    private function isApiValidation() {
+    public function isApiValidation() {
       return isset($_GET['echostr']);
     }
 
@@ -250,7 +253,7 @@
 ERR;
           $content = sprintf($template, $ex->getMessage(), $ex->getFile(), $ex->getLine());
         }
-        exit(new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $content));
+        echo new WechatTextResponse($this->getRequest('fromusername'), $this->getRequest('tousername'), $content);
       }
     }
 
