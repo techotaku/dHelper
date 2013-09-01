@@ -14,19 +14,17 @@ http {
   sendfile        on;
   keepalive_timeout  65;
 
+  index index.php;
+
   server {
-    listen       8080;
+    listen       80;
     root         <?php echo $root ?>;
 
     if (!-e $request_filename) {
       rewrite  ^(.*)$  /index.php/$1  last;
     }
 
-    location / {
-      index  index.php;
-    }
-
-    location ~ \.php$ {      
+    location ~ \.php($|/) {      
       fastcgi_pass   127.0.0.1:9000;
       fastcgi_index  index.php;
       fastcgi_param  SCRIPT_FILENAME  <?php echo $root ?>$fastcgi_script_name;
