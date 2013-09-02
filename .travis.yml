@@ -1,0 +1,18 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+before_script:
+  - cd ..
+  - ./dbcha/test/install-nginx.sh
+  - php dbcha/test/make-nginx-cfg.php `pwd`/dbcha > ~/openresty/nginx/conf/nginx.conf
+  - mv dbcha/test/config.php dbcha/config.php
+  - sudo apt-get install php5-fpm
+  - /etc/init.d/php5-fpm start
+  - sudo ~/openresty/nginx/sbin/nginx
+  - sleep 3
+
+script: phpunit

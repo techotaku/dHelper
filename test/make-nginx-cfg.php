@@ -17,7 +17,7 @@ http {
   index index.php;
 
   server {
-    listen       80;
+    listen       8080;
     root         <?php echo $root ?>;
 
     if (!-e $request_filename) {
@@ -33,16 +33,26 @@ http {
   }
 
   server {
-    listen       443;
+    listen       8081;
 
     ssl                  on;
     ssl_certificate      <?php echo $root ?>/test/20140901.pem;
     ssl_certificate_key  <?php echo $root ?>/test/20140901.pem;
 
-    location / {
-      root   <?php echo $root ?>;
-      index  index.html;
+    root   <?php echo $root ?>/test/apis;
+
+    location ^~ /v2/music/search {
+      rewrite  ^(.*)$  /api.music.json  last;
     }
+
+    location ^~ /v2/movie/search {
+      rewrite  ^(.*)$  /api.movie.json  last;
+    }
+
+    location ^~ /v2/book/search {
+      rewrite  ^(.*)$  /api.book.json  last;
+    }
+
   }
 
 }

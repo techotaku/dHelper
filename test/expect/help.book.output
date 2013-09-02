@@ -1,0 +1,13 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[图书搜索说明：
+
+图书 关键字
+b 关键字
+
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如"图书 天光云影"。]]></Content>
+</xml>

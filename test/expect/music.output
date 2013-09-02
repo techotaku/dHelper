@@ -1,0 +1,60 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[news]]></MsgType>
+  <ArticleCount>10</ArticleCount>
+  <Articles>
+    <item>
+  <Title><![CDATA[杨坤]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img5.douban.com/spic/s3865449.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/3890550/]]></Url>
+</item><item>
+  <Title><![CDATA[京剧 空城记(V)]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/pics/music/default_cover/spic/music-default.gif]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/2168644/]]></Url>
+</item><item>
+  <Title><![CDATA[空城]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img5.douban.com/spic/s6907149.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/6816043/]]></Url>
+</item><item>
+  <Title><![CDATA[余派名剧 失街亭 空城记 斩马谡(VCD)]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/spic/s6539925.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/6541840/]]></Url>
+</item><item>
+  <Title><![CDATA[余派名剧 失街亭 空城记 斩马谡]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/pics/music/default_cover/spic/music-default.gif]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/2168937/]]></Url>
+</item><item>
+  <Title><![CDATA[空城 Air City 2007 OST]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/spic/s27022166.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/25707950/]]></Url>
+</item><item>
+  <Title><![CDATA[中国京剧音配像精粹 - 失街亭 空城计 斩马谡]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img4.douban.com/spic/s1963248.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/1950362/]]></Url>
+</item><item>
+  <Title><![CDATA[京剧:失街亭 空城计 斩马谡]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/spic/s3651583.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/1846770/]]></Url>
+</item><item>
+  <Title><![CDATA[空城计 斩马谡]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img5.douban.com/spic/s4278909.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/1998851/]]></Url>
+</item><item>
+  <Title><![CDATA[京剧:失街亭、空城计、斩马稷]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/spic/s6543763.jpg]]></PicUrl>
+  <Url><![CDATA[http://music.douban.com/subject/6544720/]]></Url>
+</item>
+  </Articles>
+</xml>

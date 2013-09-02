@@ -1,0 +1,13 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[音乐搜索说明：
+
+音乐 关键字
+m 关键字
+
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如"音乐 江南"。]]></Content>
+</xml>

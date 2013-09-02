@@ -1,5 +1,7 @@
 <?php
 
+define(APP_ROOT, __DIR__);
+
 /**
  * Minimal sample router
  */
@@ -69,7 +71,7 @@ class Controller {
 class WelcomeController extends Controller {
 
   protected function index() {
-    echo file_get_contents('./Welcome_index.html');
+    echo file_get_contents( APP_ROOT . '/Welcome_index.html');
   }
 }
 
@@ -111,8 +113,8 @@ b 关键字\n
   protected function before() {
     parent::before();
 
-    require_once './lib/Wechat.php';
-    require_once './config.php';
+    require_once APP_ROOT . '/lib/Wechat.php';
+    require_once APP_ROOT . '/config.php';
 
     $this->wechat = new Wechat(TOKEN, DEBUG);
 
@@ -146,6 +148,7 @@ b 关键字\n
   }
 
   protected function nop() {
+    // nop
   }
 
   protected function index() {
@@ -257,7 +260,7 @@ b 关键字\n
 
     if (in_array($api, array('Movie', 'Music', 'Book'))) {
 
-      require_once './lib/DoubanOauth.php';
+      require_once APP_ROOT . '/lib/DoubanOauth.php';
       $appConfig = array(
         'client_id' => DKEY,
         'secret' => DSERCRET,

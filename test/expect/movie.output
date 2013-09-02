@@ -1,0 +1,60 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[news]]></MsgType>
+  <ArticleCount>10</ArticleCount>
+  <Articles>
+    <item>
+  <Title><![CDATA[怪兽大学]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/view/movie_poster_cover/lpst/public/p2033476722.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/3789848/]]></Url>
+</item><item>
+  <Title><![CDATA[怪兽大战外星人外传：活死人萝卜之夜]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s24476355.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/19967905/]]></Url>
+</item><item>
+  <Title><![CDATA[十三号仓库：怪兽大战]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img5.douban.com/lpic/s22707449.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/10439778/]]></Url>
+</item><item>
+  <Title><![CDATA[哥斯拉之怪兽大战争]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s2378841.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/2059287/]]></Url>
+</item><item>
+  <Title><![CDATA[怪兽大决战]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s2406684.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/2081282/]]></Url>
+</item><item>
+  <Title><![CDATA[奥特曼 怪兽大决战]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s3866666.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/3831615/]]></Url>
+</item><item>
+  <Title><![CDATA[大战外星人]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s3583412.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/2028650/]]></Url>
+</item><item>
+  <Title><![CDATA[哥斯拉·迷你拉·加巴拉：全体怪兽大进击]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s2378850.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/2059296/]]></Url>
+</item><item>
+  <Title><![CDATA[怪兽大聚会]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s1508556.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/1298411/]]></Url>
+</item><item>
+  <Title><![CDATA[哥斯拉·伊比拉·摩斯拉：南海大决斗]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s2389736.jpg]]></PicUrl>
+  <Url><![CDATA[http://movie.douban.com/subject/2067462/]]></Url>
+</item>
+  </Articles>
+</xml>

@@ -106,6 +106,16 @@ class DoubanOauth
      */
     public function __construct($config)
     {
+        if (defined('DOUBAN_API')) {
+             $this->apiUri = DOUBAN_API;
+        }
+        if (defined('DOUBAN_ACCESS')) {
+             $this->accessUri = DOUBAN_ACCESS;
+        }
+        if (defined('DOUBAN_AUTH')) {
+             $this->authorizeUri = DOUBAN_AUTH;
+        }
+        
         $this->clientId = $config['client_id'];
         $this->secret = $config['secret'];
         $this->redirectUri = $config['redirect_uri'];

@@ -1,0 +1,13 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA[电影搜索说明：
+
+电影 关键字
+f 关键字
+
+关键字可用空格隔开，至多返回匹配的前十个结果。
+如"电影 一代宗师"。]]></Content>
+</xml>

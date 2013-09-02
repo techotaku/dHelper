@@ -1,0 +1,60 @@
+<xml>
+  <ToUserName><![CDATA[fromUser]]></ToUserName>
+  <FromUserName><![CDATA[mp.weixin]]></FromUserName>
+  <CreateTime></CreateTime>
+  <MsgType><![CDATA[news]]></MsgType>
+  <ArticleCount>10</ArticleCount>
+  <Articles>
+    <item>
+  <Title><![CDATA[宗教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img4.douban.com/lpic/s8903588.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1967719/]]></Url>
+</item><item>
+  <Title><![CDATA[中国民间宗教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s24395735.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1447911/]]></Url>
+</item><item>
+  <Title><![CDATA[宗教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img4.douban.com/lpic/s22706728.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/19965201/]]></Url>
+</item><item>
+  <Title><![CDATA[世界宗教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img4.douban.com/lpic/s8471358.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/6773759/]]></Url>
+</item><item>
+  <Title><![CDATA[广东宗教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/pics/book-default-large.gif]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/3048208/]]></Url>
+</item><item>
+  <Title><![CDATA[基督宗教灵修神学简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img4.douban.com/lpic/s26536768.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/24696002/]]></Url>
+</item><item>
+  <Title><![CDATA[基督教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s1439911.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1245725/]]></Url>
+</item><item>
+  <Title><![CDATA[基督教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img5.douban.com/lpic/s9773479.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1233277/]]></Url>
+</item><item>
+  <Title><![CDATA[基督教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s5691605.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1279633/]]></Url>
+</item><item>
+  <Title><![CDATA[中国佛教简史]]></Title>
+  <Description><![CDATA[]]></Description>
+  <PicUrl><![CDATA[http://img3.douban.com/lpic/s9021166.jpg]]></PicUrl>
+  <Url><![CDATA[http://book.douban.com/subject/1103849/]]></Url>
+</item>
+  </Articles>
+</xml>
