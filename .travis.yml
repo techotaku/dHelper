@@ -7,8 +7,10 @@ php:
 
 before_script:
   - cd ..
+  - php dbcha/test/make-fpm-cfg.php $USER `pwd`/php-fpm.sock > ./php-fpm.conf
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm --fpm-config ./php-fpm.conf
   - ./dbcha/test/install-nginx.sh
-  - php dbcha/test/make-nginx-cfg.php `pwd`/dbcha > ~/openresty/nginx/conf/nginx.conf
+  - php dbcha/test/make-nginx-cfg.php `pwd`/dbcha `pwd`/php-fpm.sock > ~/openresty/nginx/conf/nginx.conf
   - mv dbcha/test/testcfg.php dbcha/config.php
   - sudo ~/openresty/nginx/sbin/nginx
   - sleep 3

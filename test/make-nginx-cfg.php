@@ -1,5 +1,6 @@
 <?php
   $root = $argv[1];
+  $sock = $argv[2];
 ?>
 worker_processes  1;
 
@@ -25,7 +26,7 @@ http {
     }
 
     location ~ \.php($|/) {      
-      fastcgi_pass   127.0.0.1:9000;
+      fastcgi_pass   unix:<?php echo $sock ?>;
       fastcgi_index  index.php;
       fastcgi_param  SCRIPT_FILENAME  <?php echo $root ?>$fastcgi_script_name;
       include        fastcgi_params;
