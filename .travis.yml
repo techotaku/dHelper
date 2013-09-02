@@ -10,7 +10,6 @@ before_script:
   - ./dbcha/test/install-nginx.sh
   - php dbcha/test/make-nginx-cfg.php `pwd`/dbcha > ~/openresty/nginx/conf/nginx.conf
   - mv dbcha/test/testcfg.php dbcha/config.php
-  - /etc/init.d/php5-fpm start
   - sudo ~/openresty/nginx/sbin/nginx
   - sleep 3
 
